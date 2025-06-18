@@ -93,7 +93,24 @@ public class MjScene : MonoBehaviour {
     DestroyScene();
   }
 
-  protected unsafe void FixedUpdate() {
+  protected unsafe void Update()
+  {
+    if (Physics.simulationMode == SimulationMode.Update)
+    {
+      DoStep();
+    }
+  }
+
+  protected unsafe void FixedUpdate()
+  {
+    if (Physics.simulationMode == SimulationMode.FixedUpdate)
+    {
+      DoStep();
+    }
+  }
+
+  public unsafe void DoStep()
+  {
     preUpdateEvent?.Invoke(this, new MjStepArgs(Model, Data));
     StepScene();
     postUpdateEvent?.Invoke(this, new MjStepArgs(Model, Data));
